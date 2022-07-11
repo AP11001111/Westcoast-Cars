@@ -66,13 +66,13 @@ public class VehicleRepository : IVehicleRepository
             .SingleOrDefaultAsync();
     }
 
-    public async Task<List<VehicleViewModel>> GetVehicleByMakeAsync(string make)
-    {
-        return await _context.Vehicles
-            .Where(v => v.Make!.ToLower() == make.ToLower())
-            .ProjectTo<VehicleViewModel>(_mapper.ConfigurationProvider)
-            .ToListAsync();
-    }
+    // public async Task<List<VehicleViewModel>> GetVehicleByMakeAsync(string make)
+    // {
+    //     return await _context.Vehicles
+    //         .Where(v => v.Make!.ToLower() == make.ToLower())
+    //         .ProjectTo<VehicleViewModel>(_mapper.ConfigurationProvider)
+    //         .ToListAsync();
+    // }
 
     public async Task<List<VehicleViewModel>> ListAllVehiclesAsync()
     {
@@ -96,7 +96,7 @@ public class VehicleRepository : IVehicleRepository
 
         // _mapper.Map<PostVehicleViewModel, Vehicle>(model, vehicle);
         vehicle.RegNo = model.RegNo;
-        vehicle.Make = model.Make;
+        // vehicle.Make = model.Make;
         vehicle.Model = model.Model;
         vehicle.ModelYear = model.ModelYear;
         vehicle.Mileage = model.Mileage;

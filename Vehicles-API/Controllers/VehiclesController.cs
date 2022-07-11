@@ -75,13 +75,13 @@ namespace Vehicles_API.Controllers
         }
 
         //Metod för att hämta fordon med RegNo
-        [HttpGet("bymake/{make}")]
-        public async Task<ActionResult<List<VehicleViewModel>>> GetVehicleByMake( string make){
-            var response = await _vehicleRepo.GetVehicleByMakeAsync(make);
-            // var response = await _context.Vehicles.Where(v => v.Make!.ToLower() == make.ToLower()).ToListAsync();
-            if(response is null) return NotFound($"Vi kunde inte hitta någon bil med märke: {make}");
-            return Ok(response);
-        }
+        // [HttpGet("bymake/{make}")]
+        // public async Task<ActionResult<List<VehicleViewModel>>> GetVehicleByMake( string make){
+        //     var response = await _vehicleRepo.GetVehicleByMakeAsync(make);
+        //     // var response = await _context.Vehicles.Where(v => v.Make!.ToLower() == make.ToLower()).ToListAsync();
+        //     if(response is null) return NotFound($"Vi kunde inte hitta någon bil med märke: {make}");
+        //     return Ok(response);
+        // }
 
         // Lägger till ett nytt fordon i systemet...
         [HttpPost()]

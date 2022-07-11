@@ -10,8 +10,9 @@ namespace Vehicles_API.Interfaces
         public Task<VehicleViewModel?> GetVehicleAsync(string regNumber);
         public Task<List<VehicleViewModel>> GetVehicleByMakeAsync(string make);
         public Task AddVehicleAsync(PostVehicleViewModel model);
-        public Task DeleteVehicle(int id);
-        public Task UpdateVehicle(int id, PostVehicleViewModel model);
+        public Task DeleteVehicleAsync(int id);
+        public Task UpdateVehicleAsync(int id, PostVehicleViewModel model);
+        public Task UpdateVehicleAsync(int id, PatchVehicleViewModel model);
         public Task<bool> SaveAllAsync();
 
     }

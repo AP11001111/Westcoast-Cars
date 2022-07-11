@@ -68,7 +68,7 @@ namespace Vehicles_API.Controllers
 
         //Metod för att hämta fordon med RegNo
         [HttpGet("byregno/{regNo}")]
-        public async Task<ActionResult<Vehicle>> GetVehicleByRegNo( string regNo){
+        public async Task<ActionResult<VehicleViewModel>> GetVehicleByRegNo( string regNo){
             var response = await _vehicleRepo.GetVehicleAsync(regNo);
             if(response is null) return NotFound($"Vi kunde inte hitta någon bil med regNo: {regNo}");
             return Ok(response);
@@ -76,7 +76,7 @@ namespace Vehicles_API.Controllers
 
         //Metod för att hämta fordon med RegNo
         [HttpGet("bymake/{make}")]
-        public async Task<ActionResult<List<Vehicle>>> GetVehicleByMake( string make){
+        public async Task<ActionResult<List<VehicleViewModel>>> GetVehicleByMake( string make){
             var response = await _vehicleRepo.GetVehicleByMakeAsync(make);
             // var response = await _context.Vehicles.Where(v => v.Make!.ToLower() == make.ToLower()).ToListAsync();
             if(response is null) return NotFound($"Vi kunde inte hitta någon bil med märke: {make}");
@@ -110,7 +110,7 @@ namespace Vehicles_API.Controllers
         public async Task<ActionResult> UpdateVehicle(int id, PostVehicleViewModel model){
             try
             {
-                await _vehicleRepo.UpdateVehicle(id, model);
+                await _vehicleRepo.UpdateVehicleAsync(id, model);
                 if (await _vehicleRepo.SaveAllAsync())
                 {
                     return NoContent();
@@ -123,10 +123,24 @@ namespace Vehicles_API.Controllers
             }
         }
 
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> UpdateVehicle(int id, PatchVehicleViewModel model){
+            try
+            {
+                await _vehicleRepo.UpdateVehicleAsync(id, model);
+                if(await _vehicleRepo.SaveAllAsync()) return NoContent();
+                return StatusCode(500,"Ett fel inträffade när fordonet skulle uppdateras");
+            }
+            catch (Exception e)
+            {                
+                return StatusCode(500, e.Message);
+            }
+        }
+
         // Tar bort ett fordon ifrån systemet
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteVehicle(int id){
-            await _vehicleRepo.DeleteVehicle(id);
+            await _vehicleRepo.DeleteVehicleAsync(id);
 
             if (await _vehicleRepo.SaveAllAsync()) return NoContent(); // Status kod 204
 

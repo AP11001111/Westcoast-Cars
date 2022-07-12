@@ -20,6 +20,21 @@ public class ManufacturerController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<ActionResult> GetManufacturerById(int id){
+        var response = await _repo.GetManufacturerByIdAsync(id);
+        if(response is null) return NotFound($"Vi kunde inte hitta någon manufacturer med id: {id}");            
+        return Ok(response);
+    }
+
+    [HttpGet("vehicles")]
+    public async Task<ActionResult> ListManufacturersAndVehicles(){
+        return Ok(await _repo.ListManufacturersVehicles());
+    }
+
+    [HttpGet("{id}/vehicles")]
+    public async Task<ActionResult> ListManufacturerVehicles(int id){
+        var result = await _repo.ListManufacturersVehicles(id);
+        if(result is null)
+            return NotFound($"Vi kunde inte hitta någon tillverkare med id {id}");
         return Ok();
     }
 
@@ -34,12 +49,38 @@ public class ManufacturerController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateManufacturer(int id){
-        return NoContent();
+    public async Task<ActionResult> UpdateManufacturer(int id, PostManufacturerViewModel model){
+        try
+        {
+            await _repo.UpdateManufacturerAsync(id, model);
+            if (await _repo.SaveAllAsync())
+            {
+                return NoContent();
+            }
+            return StatusCode(500,"Något gick fel");
+        }
+        catch (Exception e)
+        {
+            
+            return StatusCode(500, e.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteManufacturer(int id){
-        return NoContent();
+        try
+        {
+            await _repo.DeleteManufacturerAsync(id);
+            if (await _repo.SaveAllAsync())
+            {
+                return NoContent();
+            }
+            return StatusCode(500,"Något gick fel");
+        }
+        catch (Exception e)
+        {
+            
+            return StatusCode(500, e.Message);
+        }
     }
 }

@@ -7,4 +7,5 @@ public interface IManufacturerRepository
 {
     public Task AddManufacturerAsync(PostManufacturerViewModel model);
     public Task<List<ManufacturerViewModel>> ListManufacturersAsync();
+    public Task<bool> SaveAllAsync();
 }

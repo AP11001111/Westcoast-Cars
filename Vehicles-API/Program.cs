@@ -15,6 +15,7 @@ builder.Services.AddDbContext<VehicleContext>(options =>
 
 // Dependency injection för våra egna Interface och klasser...
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
 
 // Add automapper...
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);

@@ -18,6 +18,7 @@ public class AutoMapperProfiles : Profile
             // MapFrom(src => string.Concat(src.Make, " ", src.Model)));
 
         CreateMap<PostManufacturerViewModel, Manufacturer>();
-        CreateMap<Manufacturer, ManufacturerViewModel>();
+        CreateMap<Manufacturer, ManufacturerViewModel>()
+            .ForMember( dest => dest.ManufacturerId, options => options.MapFrom(src => src.Id));
     }
 }

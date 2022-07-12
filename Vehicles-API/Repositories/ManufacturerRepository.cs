@@ -1,4 +1,6 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Vehicles_API.Data;
 using Vehicles_API.Interfaces;
 using Vehicles_API.Models;
@@ -24,6 +26,13 @@ public class ManufacturerRepository : IManufacturerRepository
 
     public Task<List<ManufacturerViewModel>> ListManufacturersAsync()
     {
-        throw new NotImplementedException();
+        return _context.Manufacturers
+            .ProjectTo<ManufacturerViewModel>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+
+    public async Task<bool> SaveAllAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
 }

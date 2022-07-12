@@ -96,13 +96,21 @@ namespace Vehicles_API.Controllers
             // };
 
             // var vehicleToAdd = _mapper.Map<Vehicle>(vehicle);
-            if (await _vehicleRepo.GetVehicleAsync(model.RegNo!.ToLower()) is not null)
+            try
             {
-                return BadRequest($"Registreringsnummer {model.RegNo} finns redan i systemet");
+                if (await _vehicleRepo.GetVehicleAsync(model.RegNo!.ToLower()) is not null)
+                {
+                    return BadRequest($"Registreringsnummer {model.RegNo} finns redan i systemet");
+                }
+                await _vehicleRepo.AddVehicleAsync(model);
+                if(await _vehicleRepo.SaveAllAsync()) return StatusCode(201);
+                return StatusCode(500, "Det gick inte att spara fordonet");
             }
-            await _vehicleRepo.AddVehicleAsync(model);
-            if(await _vehicleRepo.SaveAllAsync()) return StatusCode(201);
-            return StatusCode(500, "Det gick inte att spara fordonet");
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+            
         }
 
         // Uppdaterar ett befintligt fordon...

@@ -20,7 +20,13 @@ public class VehicleRepository : IVehicleRepository
 
     public async Task AddVehicleAsync(PostVehicleViewModel model)
     {
+        var make = await _context.Manufacturers.Include(c => c.Vehicles).Where(c => c.Name!.ToLower() == model.Make!.ToLower()).SingleOrDefaultAsync();
+        if (make is null)
+        {
+            throw new Exception ($"Tyvärr vi har inte tillverkaren {model.Make} i systemet");
+        }
         var vehicleToAdd = _mapper.Map<Vehicle>(model);
+        vehicleToAdd.Manufacturer = make;
         await _context.Vehicles.AddAsync(vehicleToAdd);
     }
 
